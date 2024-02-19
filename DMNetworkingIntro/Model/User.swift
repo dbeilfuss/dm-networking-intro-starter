@@ -21,3 +21,15 @@ import Foundation
  
  2.3 Create a separate structure called `UserResponse` that also conforms to `Codable` and contains a single `[User]` called data.
  */
+
+struct User: Codable {
+    let id: Int
+    let email: String
+    let first_name: String
+    let last_name: String
+    let avatar: String
+}
+
+struct UserResponse: Codable {
+    let data: [User]
+}

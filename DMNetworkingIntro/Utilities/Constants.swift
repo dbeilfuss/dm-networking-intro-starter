@@ -8,5 +8,5 @@
 import Foundation
 
 enum Constants {
-    static let userReuseID = "PersonCell"
+    static let userCellReuseID = "UserCell"
 }
