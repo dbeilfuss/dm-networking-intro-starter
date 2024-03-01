@@ -13,7 +13,7 @@ class UserCell: UITableViewCell {
     @IBOutlet weak var emailLabel: UILabel!
 
     func set (_ user: User) {
-        firstNameLabel.text = user.first_name
+        firstNameLabel.text = user.firstName
         emailLabel.text = user.email
     }
     

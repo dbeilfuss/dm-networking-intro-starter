@@ -7,26 +7,12 @@
 
 import UIKit
 
-/**
- 1. Create the user interface. See the provided screenshot for how the UI should look.
- 2. Follow the instructions in the `User` file.
- 3. Follow the instructions in the `NetworkManager` file.
- */
-
 class UsersViewController: UIViewController {
     
     @IBOutlet weak var usersTableView: UITableView!
-
-    /**
-     4. Create a variable called `users` and set it to an empty array of `User` objects.
-     */
     
     var users: [User] = []
-    var networkManager: NetworkManager?
-    
-    /**
-     5. Connect the UITableView to the code. Create a function called `configureTableView` that configures the table view. You may find the `Constants` file helpful. Make sure to call the function in the appropriate spot.
-     */
+    var networkManager = NetworkManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,22 +22,22 @@ class UsersViewController: UIViewController {
     }
     
     func getUsers() {
-//        users = SampleUserData.sampleUserList
-        networkManager = NetworkManager(delegate: self)
-        networkManager?.getUsers()
+        networkManager.getUsers() {
+            let result = $0
+            switch result {
+            case .success(let usersArray):
+                self.users = usersArray
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     func configureTableView () {
         usersTableView.dataSource = self
         usersTableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: Constants.userCellReuseID)
     }
-    
-    /**
-     6.1 Set the `NetworkManager`'s delegate property to the `UsersViewController`. Have the `UsersViewController` conform to the `NetworkManagerDelegate` protocol. Call the `NetworkManager`'s `getUsers` function. In the `usersRetrieved` function, assign the `users` property to the array we got back from the API and call `reloadData` on the table view.
-     */
-//    func getUsers() {
-//        
-//    }
+
 }
 
 //MARK: - TableView Extentions
@@ -66,18 +52,6 @@ extension UsersViewController: UITableViewDataSource {
         let thisUser = users[indexPath.row]
         cell.set(thisUser)
         return cell
-    }
-    
-    
-}
-
-
-//MARK: - UserDisplay Extension
-
-extension UsersViewController: NetworkManagerDelegate {
-    
-    func usersRetrieved(_ userList: [User]) {
-        users = userList
     }
     
 }
